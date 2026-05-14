@@ -373,7 +373,13 @@ async def run_backtest(req: BacktestRequest, user=Depends(get_current_user)):
 
 
 # ---------- App wiring ----------
+
+@app.get('/')
+async def health_check():
+    return {"status": "TradeLens API is running", "api_root": "/api"}
+
 app.include_router(api)
+
 
 app.add_middleware(
     CORSMiddleware,
