@@ -29,20 +29,21 @@ export default function SoftwarePreview() {
             <div style={{ ...styles.dot, background: '#f59e0b' }} />
             <div style={{ ...styles.dot, background: '#22c55e' }} />
           </div>
-          <div style={styles.chromeMid}>
+          <div style={styles.chromeMid} className="hidden sm:inline-flex">
             <CircleDot size={12} color="#22d3ee" />
             tradelens.app / workspace / momentum-rsi
           </div>
-          <div style={styles.chromeTag}>v4.2 · Pro</div>
+          <div style={styles.chromeTag} className="ml-auto sm:ml-0">v4.2 · Pro</div>
         </div>
 
         {/* Tabs */}
-        <div style={styles.tabs}>
+        <div style={styles.tabs} className="overflow-x-auto whitespace-nowrap scrollbar-hide">
           {tabs.map(t => {
             const Icon = t.icon;
             const isActive = active === t.key;
             return (
               <button key={t.key} onClick={() => setActive(t.key)}
+                className="flex-shrink-0"
                 style={{
                   ...styles.tabBtn,
                   background: isActive ? 'rgba(20, 184, 166, 0.12)' : 'transparent',
@@ -185,7 +186,7 @@ Content-Type: application/json
   "duration_ms": 1187
 }`;
   return (
-    <div style={apiStyles.wrap}>
+    <div style={apiStyles.wrap} className="grid-cols-1 lg:grid-cols-[1.5fr_1fr]">
       <pre style={apiStyles.pre}><code>{code}</code></pre>
       <div style={apiStyles.side}>
         <div style={apiStyles.sideCard}>
@@ -279,7 +280,7 @@ const styles = {
 };
 
 const paneStyles = {
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20 },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 },
   col: { display: 'flex', flexDirection: 'column', gap: 14 },
   cardTitle: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -311,7 +312,7 @@ const paneStyles = {
     fontFamily: 'JetBrains Mono, monospace', fontSize: 12,
     color: '#94a3b8', paddingBottom: 6
   },
-  metrics: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 },
+  metrics: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))', gap: 10 },
   metricCard: {
     padding: '14px 12px',
     background: 'rgba(8, 12, 16, 0.6)',
@@ -342,7 +343,7 @@ const paneStyles = {
 };
 
 const apiStyles = {
-  wrap: { display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 20 },
+  wrap: { display: 'grid', gap: 20 },
   pre: {
     margin: 0, padding: 18,
     background: '#06090d',

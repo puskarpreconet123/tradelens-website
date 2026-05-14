@@ -9,7 +9,7 @@ const iconMap = {
 
 export default function Hero() {
   return (
-    <section id="top" style={styles.section}>
+    <section id="top" style={styles.section} className="pt-32 sm:pt-44 pb-20 px-6 sm:px-10">
       <div style={styles.inner} className="tl-anim-up">
         <span className="tl-eyebrow">
           <span style={{ width: 6, height: 6, borderRadius: 999, background: '#22d3ee', display: 'inline-block', boxShadow: '0 0 8px #22d3ee' }} />
@@ -35,11 +35,11 @@ export default function Hero() {
           </a>
         </div>
 
-        <div style={styles.stats}>
+        <div style={styles.stats} className="grid-cols-1 sm:grid-cols-3">
           {heroStats.map((s) => {
             const Icon = iconMap[s.value] || Zap;
             return (
-              <div key={s.label} style={styles.statCard}>
+              <div key={s.label} className="tl-card grid grid-cols-[auto_1fr]" style={styles.statCard}>
                 <div style={styles.statIcon}>
                   <Icon size={18} color="#5eead4" />
                 </div>
@@ -64,7 +64,6 @@ export default function Hero() {
 const styles = {
   section: {
     position: 'relative',
-    padding: '180px 24px 80px',
     maxWidth: 1240, margin: '0 auto',
     minHeight: '100vh',
     display: 'flex', alignItems: 'center'
@@ -92,7 +91,6 @@ const styles = {
   stats: {
     marginTop: 64,
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
     gap: 14,
     maxWidth: 760
   },

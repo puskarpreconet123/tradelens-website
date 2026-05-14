@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Activity, LogOut, Copy, Check, Play, Loader2, TrendingUp, ShieldCheck, Receipt } from 'lucide-react';
+import { Activity, LogOut, Copy, Check, Play, Loader2, TrendingUp, ShieldCheck, Receipt, User, ChevronDown } from 'lucide-react';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '../components/ui/dropdown-menu';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../hooks/use-toast';
 import api from '../lib/api';
@@ -84,24 +92,47 @@ export default function Dashboard() {
       <div className="tl-bg-glow tl-bg-glow-a" />
       <div className="tl-bg-glow tl-bg-glow-b" />
 
-      <header style={s.header}>
+      <header style={s.header} className="px-4 sm:px-7">
         <Link to="/" style={s.brand}>
           <div style={s.logo}><Activity size={18} color="#062024" strokeWidth={2.5} /></div>
           <span style={s.brandText}>TradeLens</span>
         </Link>
         <div style={s.userRow}>
-          <span style={s.userName}>{user.name}</span>
-          <span style={s.userEmail}>{user.email}</span>
-          <button onClick={() => { logout(); navigate('/'); }} className="tl-btn tl-btn-ghost" style={{ height: 38, padding: '0 14px' }}>
-            <LogOut size={14} /> Sign out
-          </button>
+          <div className="hidden sm:flex flex-col items-end mr-2">
+            <span style={s.userName}>{user.name}</span>
+            <span style={s.userEmail}>{user.email}</span>
+          </div>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="tl-btn tl-btn-ghost" style={{ height: 40, padding: '0 8px 0 12px', gap: 8 }}>
+                <div style={{ ...s.logo, width: 24, height: 24, borderRadius: 6 }}>
+                  <User size={14} color="#062024" />
+                </div>
+                <ChevronDown size={14} className="text-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 bg-[#0c1117] border-[rgba(94,234,212,0.12)] text-[#e6edf3]">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user.name}</p>
+                  <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-[rgba(94,234,212,0.12)]" />
+              <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} className="text-red-400 focus:text-red-400 focus:bg-red-400/10 cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sign out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
-      <main style={s.main}>
+      <main style={s.main} className="px-4 sm:px-7 py-6 sm:py-10">
         <div style={s.hero}>
           <span className="tl-eyebrow">Workspace</span>
-          <h1 style={s.h1}>Welcome, <span style={s.h1Accent}>{user.name.split(' ')[0]}</span></h1>
+          <h1 className="text-3xl sm:text-4xl font-semibold text-[#f1f5f9] tracking-tight my-3">Welcome, <span style={s.h1Accent}>{user.name.split(' ')[0]}</span></h1>
           <p style={s.heroSub}>Manage your licenses, run backtests, and review your order history.</p>
         </div>
 
@@ -152,14 +183,14 @@ export default function Dashboard() {
             <h2 style={s.panelTitle}>Run a Backtest</h2>
           </div>
 
-          <div style={s.formGrid}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 items-end">
             <Field label="Strategy" value={form.strategy} onChange={(v) => setForm({ ...form, strategy: v })} />
             <Field label="Market" value={form.market} onChange={(v) => setForm({ ...form, market: v })} />
             <Field label="Capital (USD)" type="number" value={form.capital} onChange={(v) => setForm({ ...form, capital: Number(v) })} />
             <Field label="Start" type="date" value={form.start} onChange={(v) => setForm({ ...form, start: v })} />
             <Field label="End" type="date" value={form.end} onChange={(v) => setForm({ ...form, end: v })} />
-            <button onClick={runBacktest} disabled={running || !activeLicense} className="tl-btn tl-btn-primary" style={{ alignSelf: 'flex-end', height: 44 }}>
-              {running ? <><Loader2 size={14} className="tl-spin" /> Running…</> : <><Play size={14} /> Run backtest</>}
+            <button onClick={runBacktest} disabled={running || !activeLicense} className="tl-btn tl-btn-primary" style={{ height: 42 }}>
+              {running ? <><Loader2 size={14} className="tl-spin" /> Running…</> : <><Play size={14} /> Run</>}
             </button>
           </div>
 
@@ -187,30 +218,32 @@ export default function Dashboard() {
           {orders.length === 0 ? (
             <div style={s.empty}>No orders yet. <Link to="/#pricing" style={s.altLink}>Browse plans →</Link></div>
           ) : (
-            <table style={s.table}>
-              <thead>
-                <tr>
-                  <th style={s.th}>Date</th>
-                  <th style={s.th}>Plan</th>
-                  <th style={s.th}>Period</th>
-                  <th style={s.th}>Amount</th>
-                  <th style={s.th}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((o) => (
-                  <tr key={o.id}>
-                    <td style={s.td}>{new Date(o.created_at).toLocaleString()}</td>
-                    <td style={s.td}>{o.plan_name}</td>
-                    <td style={s.td}>{o.period}</td>
-                    <td style={s.td}>${o.amount_usd}</td>
-                    <td style={s.td}>
-                      <span style={{ ...s.statusPill, ...(o.status === 'paid' ? s.statusPaid : s.statusPending) }}>{o.status}</span>
-                    </td>
+            <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+              <table style={s.table}>
+                <thead>
+                  <tr>
+                    <th style={s.th}>Date</th>
+                    <th style={s.th}>Plan</th>
+                    <th style={s.th}>Period</th>
+                    <th style={s.th}>Amount</th>
+                    <th style={s.th}>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {orders.map((o) => (
+                    <tr key={o.id}>
+                      <td style={s.td}>{new Date(o.created_at).toLocaleString()}</td>
+                      <td style={s.td}>{o.plan_name}</td>
+                      <td style={s.td}>{o.period}</td>
+                      <td style={s.td}>${o.amount_usd}</td>
+                      <td style={s.td}>
+                        <span style={{ ...s.statusPill, ...(o.status === 'paid' ? s.statusPaid : s.statusPending) }}>{o.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
@@ -221,28 +254,30 @@ export default function Dashboard() {
               <ShieldCheck size={18} color="#5eead4" />
               <h2 style={s.panelTitle}>All Licenses</h2>
             </div>
-            <table style={s.table}>
-              <thead>
-                <tr>
-                  <th style={s.th}>Issued</th>
-                  <th style={s.th}>Plan</th>
-                  <th style={s.th}>License Key</th>
-                  <th style={s.th}>Backtests</th>
-                  <th style={s.th}>Expires</th>
-                </tr>
-              </thead>
-              <tbody>
-                {licenses.map((l) => (
-                  <tr key={l.id}>
-                    <td style={s.td}>{new Date(l.issued_at).toLocaleDateString()}</td>
-                    <td style={s.td}>{l.plan_name} · {l.period}</td>
-                    <td style={s.td}><code>{l.key}</code></td>
-                    <td style={s.td}>{l.backtests_used} / {l.backtests_limit >= 999999 ? '∞' : l.backtests_limit}</td>
-                    <td style={s.td}>{new Date(l.expires_at).toLocaleDateString()}</td>
+            <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+              <table style={s.table}>
+                <thead>
+                  <tr>
+                    <th style={s.th}>Issued</th>
+                    <th style={s.th}>Plan</th>
+                    <th style={s.th}>License Key</th>
+                    <th style={s.th}>Backtests</th>
+                    <th style={s.th}>Expires</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {licenses.map((l) => (
+                    <tr key={l.id}>
+                      <td style={s.td}>{new Date(l.issued_at).toLocaleDateString()}</td>
+                      <td style={s.td}>{l.plan_name} · {l.period}</td>
+                      <td style={s.td}><code>{l.key}</code></td>
+                      <td style={s.td}>{l.backtests_used} / {l.backtests_limit >= 999999 ? '∞' : l.backtests_limit}</td>
+                      <td style={s.td}>{new Date(l.expires_at).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </main>
@@ -334,7 +369,7 @@ const s = {
   userRow: { display: 'flex', alignItems: 'center', gap: 14 },
   userName: { fontSize: 14, color: '#e6edf3', fontWeight: 500 },
   userEmail: { fontSize: 12.5, color: '#94a3b8', fontFamily: 'JetBrains Mono, monospace' },
-  main: { maxWidth: 1180, margin: '0 auto', padding: '40px 28px 80px', position: 'relative', zIndex: 1 },
+  main: { maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1 },
   hero: { marginBottom: 28 },
   h1: { fontFamily: 'Space Grotesk, sans-serif', fontSize: 38, fontWeight: 600, color: '#f1f5f9', letterSpacing: '-0.025em', margin: '14px 0 8px' },
   h1Accent: { background: 'linear-gradient(120deg, #22d3ee, #5eead4)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' },

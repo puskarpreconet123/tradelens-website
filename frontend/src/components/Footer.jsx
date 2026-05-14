@@ -18,25 +18,27 @@ const cols = [
 export default function Footer() {
   return (
     <footer style={styles.footer}>
-      <div style={styles.inner}>
-        <div style={styles.brandCol}>
-          <div style={styles.brandRow}>
-            <div style={styles.logoBox}>
-              <Activity size={18} color="#062024" strokeWidth={2.5} />
+      <div style={styles.inner} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="lg:col-span-2">
+          <div style={styles.brandCol}>
+            <div style={styles.brandRow}>
+              <div style={styles.logoBox}>
+                <Activity size={18} color="#062024" strokeWidth={2.5} />
+              </div>
+              <span style={styles.brand}>TradeLens</span>
             </div>
-            <span style={styles.brand}>TradeLens</span>
-          </div>
-          <p style={styles.desc}>
-            Tick-precise analytics and backtesting for serious traders. Built for speed, accuracy, and trust.
-          </p>
-          <div style={styles.socials}>
-            {[Twitter, Github, Linkedin, Mail].map((I, i) => (
-              <a key={i} href="#" style={styles.socialBtn}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(94, 234, 212, 0.5)'; e.currentTarget.style.background = 'rgba(20, 184, 166, 0.12)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(94, 234, 212, 0.18)'; e.currentTarget.style.background = 'rgba(8, 12, 16, 0.6)'; }}>
-                <I size={15} color="#5eead4" />
-              </a>
-            ))}
+            <p style={styles.desc}>
+              Tick-precise analytics and backtesting for serious traders. Built for speed, accuracy, and trust.
+            </p>
+            <div style={styles.socials}>
+              {[Twitter, Github, Linkedin, Mail].map((I, i) => (
+                <a key={i} href="#" style={styles.socialBtn}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(94, 234, 212, 0.5)'; e.currentTarget.style.background = 'rgba(20, 184, 166, 0.12)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(94, 234, 212, 0.18)'; e.currentTarget.style.background = 'rgba(8, 12, 16, 0.6)'; }}>
+                  <I size={15} color="#5eead4" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -56,9 +58,9 @@ export default function Footer() {
         ))}
       </div>
 
-      <div style={styles.bottom}>
+      <div style={styles.bottom} className="flex-col sm:flex-row text-center sm:text-left">
         <span>© {new Date().getFullYear()} TradeLens, Inc. All rights reserved.</span>
-        <div style={styles.bottomLinks}>
+        <div style={styles.bottomLinks} className="justify-center sm:justify-end">
           <a href="#" style={styles.bottomLink}>Terms</a>
           <a href="#" style={styles.bottomLink}>Privacy</a>
           <a href="#" style={styles.bottomLink}>Cookies</a>
@@ -81,8 +83,6 @@ const styles = {
   },
   inner: {
     maxWidth: 1240, margin: '0 auto',
-    display: 'grid',
-    gridTemplateColumns: '1.4fr repeat(3, 1fr)',
     gap: 40
   },
   brandCol: {},
@@ -115,7 +115,7 @@ const styles = {
   bottom: {
     maxWidth: 1240, margin: '40px auto 0',
     paddingTop: 22, borderTop: '1px solid rgba(94, 234, 212, 0.08)',
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 14,
+    display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 14,
     fontSize: 13, color: '#64748b'
   },
   bottomLinks: { display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' },

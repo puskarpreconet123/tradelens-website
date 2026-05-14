@@ -146,6 +146,11 @@ main {
 }
 
 /* Animations */
+@keyframes tl-slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes tl-fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -169,6 +174,24 @@ main {
 .tl-anim-up {
   animation: tl-fadeUp 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* Responsive Table */
+.tl-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .tl-section { padding: 80px 20px; }
+  .tl-btn { height: 44px; padding: 0 18px; font-size: 14px; }
+  .tl-h2 { font-size: 32px; }
+  .tl-sub { font-size: 15px; }
+}
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Live dot */
 .tl-livedot {

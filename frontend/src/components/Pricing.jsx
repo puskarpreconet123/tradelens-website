@@ -149,7 +149,7 @@ export default function Pricing() {
                 </div>
               </div>
 
-              <div style={styles.optionRow}>
+              <div className="grid grid-cols-1 xs:grid-cols-3 gap-2">
                 {p.options.map((o, idx) => (
                   <button key={o.period}
                     onClick={() => setSelected(s => ({ ...s, [p.name]: idx }))}
@@ -188,7 +188,7 @@ export default function Pricing() {
       </div>
 
       {/* Demo card */}
-      <div className="tl-card" style={styles.demoWrap}>
+      <div className="tl-card grid grid-cols-1 lg:grid-cols-[1fr_2fr_auto] text-center lg:text-left" style={styles.demoWrap}>
         <div>
           <span className="tl-eyebrow">
             <FlaskConical size={12} /> Try Before You Buy
@@ -197,13 +197,13 @@ export default function Pricing() {
           <p style={styles.demoTag}>Test every premium feature, risk-free.</p>
         </div>
 
-        <div style={styles.demoMid}>
+        <div style={styles.demoMid} className="justify-center lg:justify-start">
           <div style={styles.demoBlock}>
             <div style={styles.demoLab}>{demo.duration}</div>
             <div style={styles.demoPrice}>{demo.price}</div>
             <div style={styles.demoLab}>{demo.limit}</div>
           </div>
-          <ul style={styles.demoList}>
+          <ul style={styles.demoList} className="items-center lg:items-start">
             {demo.perks.map((p, i) => (
               <li key={i} style={styles.featureRow}>
                 <Check size={14} color="#5eead4" /> <span>{p}</span>
@@ -240,7 +240,7 @@ const styles = {
   optionDetail: { fontSize: 11, color: 'inherit', opacity: 0.85 },
   features: { listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 9, flex: 1 },
   featureRow: { display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13.5, color: '#cbd5e1', lineHeight: 1.6 },
-  demoWrap: { marginTop: 36, padding: '34px 32px', display: 'grid', gridTemplateColumns: '1fr 2fr auto', gap: 28, alignItems: 'center', background: 'linear-gradient(120deg, rgba(20, 184, 166, 0.12), rgba(8, 12, 16, 0.85))', border: '1px solid rgba(94, 234, 212, 0.22)' },
+  demoWrap: { marginTop: 36, padding: '34px 32px', gap: 28, alignItems: 'center', background: 'linear-gradient(120deg, rgba(20, 184, 166, 0.12), rgba(8, 12, 16, 0.85))', border: '1px solid rgba(94, 234, 212, 0.22)' },
   demoTitle: { fontFamily: 'Space Grotesk, sans-serif', fontSize: 28, fontWeight: 600, color: '#f1f5f9', margin: '12px 0 6px', letterSpacing: '-0.02em' },
   demoTag: { fontSize: 14, color: '#94a3b8' },
   demoMid: { display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' },
