@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+motor
+razorpay
+python-dotenv
+python-jose[cryptography]
+bcrypt
+requests
+pydantic
+email-validator
